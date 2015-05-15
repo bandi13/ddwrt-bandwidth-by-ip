@@ -57,13 +57,11 @@ do
   if [ $DO_ACTIVE == 1 ]; then
     if [ $CONNTRACK -eq 19 ]; then
       awk 'BEGIN { printf "{ip_conntrack::"} { gsub(/(src|dst|sport|dport|mark)=/, ""); if ($1 == "tcp") { printf "'\''%s'\'','\''%s'\'','\''%s'\'','\''%s'\'','\''%s'\'',%s,",$1,$5,$7,$6,$8,$(NF-1); } else { printf "'\''%s'\'','\''%s'\'','\''%s'\'','\''%s'\'','\''%s'\'',%s,",$1,$4,$6,$5,$7,$(NF-1); } } END { print "'\''-'\''}"}' /proc/net/ip_conntrack >> /tmp/traffic.dat
-#      awk 'BEGIN { printf "{ip_conntrack::"} { gsub(/(src|dst|sport|dport|mark)=/, ""); printf "'\''%s'\'','\''%s'\'','\''%s'\'','\''%s'\'','\''%s'\'',%s,",$1,$1 == "tcp" ? $5 : $4,$1 == "tcp" ? $7 : $6,$1 == "tcp" ? $6 : $5,$1 == "tcp" ? $8 : $7,$(NF-1); } END { print "'\''-'\''}"}' /proc/net/ip_conntrack >> /tmp/traffic.dat
     else
       awk 'BEGIN { printf "{ip_conntrack::"} { gsub(/(src|dst|sport|dport|mark)=/, ""); if ($1 == "tcp") { printf "'\''%s'\'','\''%s'\'','\''%s'\'','\''%s'\'','\''%s'\'',%s,",$1,$5,$7,$6,$8,$(NF-2); } else { printf "'\''%s'\'','\''%s'\'','\''%s'\'','\''%s'\'','\''%s'\'',%s,",$1,$4,$6,$5,$7,$(NF-2); } } END { print "'\''-'\''}"}' /proc/net/ip_conntrack >> /tmp/traffic.dat
-#      awk 'BEGIN { printf "{ip_conntrack::"} { gsub(/(src|dst|sport|dport|mark)=/, ""); printf "'\''%s'\'','\''%s'\'','\''%s'\'','\''%s'\'','\''%s'\'',%s,",$1,$1 == "tcp" ? $5 : $4,$1 == "tcp" ? $7 : $6,$1 == "tcp" ? $6 : $5,$1 == "tcp" ? $8 : $7,$(NF-2); } END { print "'\''-'\''}"}' /proc/net/ip_conntrack >> /tmp/traffic.dat
     fi
   else
-    echo "{ip_contrack::'','','','','','','-'}" >> /tmp/traffic.dat
+    echo "{ip_contrack::'-','','','','',''}" >> /tmp/traffic.dat
   fi
   iptables -L RRDIPT -vnx -t filter | grep ${LAN_TYPE} | awk 'BEGIN { printf "{bw_table::" } { if (NR % 2 == 1) printf "'\''%s'\'','\''%s'\'',",$8,$2; else printf "'\''%s'\'',",$2;}' >> /tmp/traffic.dat
   uptime | awk '{ printf "'\''-'\'','\''%s'\''}\n{uptime::%s}\n", $1, $0 } END { print "{ipinfo::<% show_wanipinfo(); %>}" }' >> /tmp/traffic.dat
