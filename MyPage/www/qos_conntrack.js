@@ -139,7 +139,7 @@ function setBWTable() {
 			var cellcount = row.insertCell(-1);
 			cellcount.style.textAlign = 'right';
 			cellcount.innerHTML = (clientid+1)+".";
-			cellcount.style.background = color[clientid];
+			cellcount.style.background = keycolor(clientid);
 			row.insertCell(-1).innerHTML = name;
 			var cellcount = row.insertCell(-1);
 			cellcount.innerHTML = val[i];
@@ -297,7 +297,7 @@ function bandwidth(ip,direction,cur) {
 }
 
 function keycolor(id) {
-	if (id >= color.length) id = id - color.length;
+	while (id >= color.length) id = id - color.length;
 	return color[id];
 }
 
