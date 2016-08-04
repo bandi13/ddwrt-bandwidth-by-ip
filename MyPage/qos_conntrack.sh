@@ -20,7 +20,6 @@ echo "   var ip_conntrack_max=$(nvram get ip_conntrack_max)"
 echo "   var qos_uplink=$(nvram get wshaper_uplink)"
 echo "   var qos_downlink=$(nvram get wshaper_downlink)"
 echo "   var hosts = { "
-awk '{ printf "    '\''%s'\'': { online: false, name: \"%s\" },\n",$1,$2; }' /tmp/hosts
 awk '{ printf "    '\''%s'\'': { online: false, name: \"%s\" },\n",$3,$4; }' /tmp/dnsmasq.leases
 echo "    '$(nvram get wan_ipaddr)': { online: true, name: \"&lt;WAN&gt;\" }"
 echo "   }"
